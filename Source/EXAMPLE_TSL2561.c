@@ -6,17 +6,16 @@
      Create Date	: 2017/11/01
 ---------------------------------------------------------------------- */
 
-#ifndef __TSL2561_EXAMPLE__
-#define __TSL2561_EXAMPLE__
-
 #include <mega32a.h>
 #include <stdio.h>
 #include <delay.h>
 #include <math.h>
 #include <alcd.h>
 #include <i2c.h>
-#include "SENSOR_TSL2561.h"
-#include "Porting_Layer.h"
+#include <datatype_Layer.h>
+#include <swi2c_Layer.h>
+#include <SENSOR_TSL2561.h>
+
 
 void EXAMPLE_TSL2561(void);
 
@@ -56,7 +55,7 @@ void EXAMPLE_TSL2561(void)
 		while(1)
 		{
 			/* wait data ok */
-			delay_ms(102); 	/*NOMINAL INTEGRATION TIME : 101mS  */
+			delay_ms(101); 	/*NOMINAL INTEGRATION TIME : 101mS  */
 			status = TSL2561_GET_DATA(&light_data[0]);
 			if(status !=0) 
 			{
@@ -64,7 +63,6 @@ void EXAMPLE_TSL2561(void)
 			}
 
 			/* calculate the raw data to light data */
-			/* THIS EXAMPLE not for integration time 402mS & gain is not 16x */
 			TSL2561_GET_CALCULATE_DATA(light_data[0],light_data[1],&get_lux_value);
 			
 			printf("TSL2561 lux = %ld \r\n",get_lux_value);	
@@ -107,4 +105,3 @@ void EXAMPLE_TSL2561(void)
 		
 }
 
-#endif		//#ifndef __TSL2561_EXAMPLE__

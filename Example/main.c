@@ -23,12 +23,9 @@ Data Stack size         : 512
 
 
 #include <mega32a.h>
-
 #include <delay.h>
 #include <math.h>
-
-
-#include "SENSOR_TSL2561.h"
+#include <SENSOR_TSL2561.h>
 
 // I2C Bus functions
 #include <i2c.h>
@@ -303,10 +300,9 @@ lcd_init(16);
 // Global enable interrupts
 #asm("sei")
 
-while (1)
-      {
-      // Place your code here          
- 	EXAMPLE_TSL2561();       
-                    
-      }
+	while (1)
+	{
+		// Place your code here          
+		EXAMPLE_TSL2561();                          
+	}
 }

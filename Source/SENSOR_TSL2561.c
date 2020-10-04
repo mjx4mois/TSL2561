@@ -6,16 +6,14 @@
      Create Date	: 2017/06/30
 ---------------------------------------------------------------------- */
 
-#ifndef __TSL2561_FUNCTION__
-#define __TSL2561_FUNCTION__
-
-#define TSL2561_DEBGUG		1		/* set "1" to printf debug message */
+#define TSL2561_DEBUG				(0)		/* set "1" to printf debug message */
 
 #include <stdio.h>
 #include <math.h>
 #include <delay.h>
-#include "SENSOR_TSL2561.h"
-#include "Porting_Layer.h"
+#include <datatype_Layer.h>
+#include <swi2c_Layer.h>
+#include <SENSOR_TSL2561.h>
 
 /********************************************* SYSTEM **************************************************/
 /*--------------------------------------------------------------------------------------------------*/
@@ -32,8 +30,8 @@ CHAR8S TSL2561_SET_INITIAL(void)
 			return -1 ;	/*set fail.*/	
 		}
 		
-		/* set the gain value 16x */		
-		status =TSL2561_SET_GAIN(TSL2561_GAIN_1x);/*SET 16x*/
+		/* set the gain value 1x */		
+		status =TSL2561_SET_GAIN(TSL2561_GAIN_1x);/*SET 1x*/
 		if(status !=0) 
 		{
 			return -1 ;	/*set fail.*/	
@@ -134,7 +132,7 @@ CHAR8S TSL2561_GET_DATA(INT16U *data)
 		data[0] = channel0_data;
 		data[1] = channel1_data;
 
-#if TSL2561_DEBGUG		
+#if TSL2561_DEBUG		
 		printf("[TSL2561_GET_DATA]channel0 data = %ld , channel1 data = %ld \r\n",data[0],data[1]);
 #endif
 
@@ -340,7 +338,7 @@ CHAR8S TSL2561_GET_AUTO_INTEGRATION_MODE(CHAR8U *int_data)
 			return -1;	/*write fail.*/
 		}
 
-#if TSL2561_DEBGUG		
+#if TSL2561_DEBUG		
 		printf("[TSL2561_GET_AUTO_INTEGRATION_MODE]TSL2561_REG_TIMING = 0x%x\r\n",read_data);
 #endif
 		
@@ -361,7 +359,7 @@ CHAR8S TSL2561_GET_POWER_STATUS(CHAR8U *power_status)
 			return -1; /*read fail.*/	
 		}
 
-#if TSL2561_DEBGUG		
+#if TSL2561_DEBUG		
 		printf("[TSL2561_GET_POWER_STATUS]TSL2561_REG_CONTROL = 0x%x\r\n",read_data);
 #endif
 		
@@ -420,7 +418,7 @@ CHAR8S TSL2561_GET_CALCULATE_DATA(INT16U raw_data_channel0,INT16U raw_data_chann
 	INT32U channel1 = (INT32U)raw_data_channel1;
 
 
-#if TSL2561_DEBGUG		
+#if TSL2561_DEBUG		
 		printf("[TSL2561_GET_CALCULATE_DATA]channel0 =%lx , channel1 =%lx \r\n",channel0,channel1);
 #endif
 		
@@ -430,9 +428,9 @@ CHAR8S TSL2561_GET_CALCULATE_DATA(INT16U raw_data_channel0,INT16U raw_data_chann
 		{
 			return -1;	/*read fail*/
 		}
-
-		read_gain = read_data & 0x10;	/*mask*/ 
-		read_data = read_data & 0x03;	/*mask*/
+		
+		read_gain = read_data & 0x10;	/*mask*/ 	/*GAIN */
+		read_data = read_data & 0x03;	/*mask*/	/*INTEGRATION MODE */
 
 		/* check read_data */
     		switch (read_data)
@@ -468,7 +466,7 @@ CHAR8S TSL2561_GET_CALCULATE_DATA(INT16U raw_data_channel0,INT16U raw_data_chann
 		/* round the ratio value*/
     		ratio = (ratio1 + 1) >> 1;
 
-#if TSL2561_DEBGUG		
+#if TSL2561_DEBUG		
 		printf("ratio =0x%lx \r\n",ratio);
 #endif	
 
@@ -512,7 +510,7 @@ CHAR8S TSL2561_GET_CALCULATE_DATA(INT16U raw_data_channel0,INT16U raw_data_chann
 		lux= (temp >> LUX_SCALE);
 		*return_lux_data = lux;
 
-#if TSL2561_DEBGUG		
+#if TSL2561_DEBUG		
 		printf("[TSL2561_GET_CALCULATE_DATA]final lux =%ld \r\n",lux);
 #endif
 	
@@ -524,7 +522,7 @@ CHAR8S TSL2561_GET_CALCULATE_DATA(INT16U raw_data_channel0,INT16U raw_data_chann
 
 
 
-//************************************************* I2C ************************************************
+/************************************************** I2C *************************************************/
 /*--------------------------------------------------------------------------------------------------*/
 /* let TSL2561 read 1 byte data*/
 CHAR8S TSL2561_I2C_READ_1BYTE(CHAR8U reg_address,CHAR8U *r_data)
@@ -576,7 +574,7 @@ CHAR8S TSL2561_I2C_READ_2BYTE(CHAR8U reg_address,CHAR8U *r_data)
 		{
 			return -1;	 /*write fail	*/
 		}
-	printf("r data0 = %ld , r data1 = %ld \r\n",r_data[0],r_data[1]);
+
 		r_data[0] = read[0];
 		r_data[1] = read[1];
 		
@@ -605,4 +603,4 @@ CHAR8S TSL2561_I2C_WRITE_2BYTE(CHAR8U reg_address,CHAR8U *w_data)
 /*--------------------------------------------------------------------------------------------------*/
 /************************************************** I2C *************************************************/
 /********************************************** SYSTEM **************************************************/
-#endif //#ifndef __TSL2561_FUNCTION__ 
+

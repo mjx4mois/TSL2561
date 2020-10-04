@@ -6,17 +6,16 @@
      Create Date	: 2017/11/01
 ---------------------------------------------------------------------- */
 
-#ifndef __TSL2561_EXAMPLE__
-#define __TSL2561_EXAMPLE__
-
 #include <mega32a.h>
 #include <stdio.h>
 #include <delay.h>
 #include <math.h>
 #include <alcd.h>
 #include <i2c.h>
-#include "SENSOR_TSL2561.h"
-#include "Porting_Layer.h"
+#include <datatype_Layer.h>
+#include <swi2c_Layer.h>
+#include <SENSOR_TSL2561.h>
+
 
 void EXAMPLE_TSL2561(void);
 
@@ -106,4 +105,3 @@ void EXAMPLE_TSL2561(void)
 		
 }
 
-#endif		//#ifndef __TSL2561_EXAMPLE__

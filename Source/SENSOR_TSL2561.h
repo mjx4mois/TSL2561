@@ -230,7 +230,7 @@ typedef enum
 
 /*** function parameter : TSL2561_SET_INTERRPUT_MODE use.*/
 /*set timming register*/
-#define TSL2561_SET_AUTO_INTEGRATION_TIME		(TSL2561_INTEG1)
+#define TSL2561_SET_AUTO_INTEGRATION_TIME		(TSL2561_INTEG2)
 
 /*** function parameter : TSL2561_GET_CALCULATE_DATA use.*/
 /*set timming register*/
